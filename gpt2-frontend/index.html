@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Chat GPT2</title>
+        <link rel="stylesheet" href="assets/css/style.css" />
+    </head>
+    <body>
+        <header>
+            <h1>GPT2</h1>
+        </header>
+        <div id="wrapper">
+            <div id="output"></div>
+            <div id="input__field">
+                <input type="text" id="input" />
+                <button id="submit" id="submit">Submit</button>
+            </div>
+        </div>
+
+        <script src="./assets/js/chat_bot.js"></script>
+        <script src="./assets/js/chat_interface.js"></script>
+        <script>
+            const output = document.getElementById("output");
+            const input = document.getElementById("input");
+
+            var chatInterface = new ChatInterface(input, output);
+            var chatBot = new ChatBot(
+                (msg) => {
+                    chatInterface.appendInput(msg, 'bot');
+                }
+            );
+            
+            const onSubmit = () => {
+                const msg = chatInterface.getInput();
+                chatInterface.appendInput(msg, 'user');
+                chatBot.prompt(msg);
+                chatInterface.clearInput();
+            }
+
+            input.addEventListener("keyup", function(event) {
+                if (event.keyCode === 13) {
+                    event.preventDefault();
+                    onSubmit();
+                }
+            });
+
+            const submit = document.getElementById("submit");
+            submit.addEventListener("click", onSubmit);
+
+        </script>
+    </body>
+</html>
